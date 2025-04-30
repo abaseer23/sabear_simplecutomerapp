@@ -33,15 +33,23 @@ pipeline {
                 }
             }
         }
-       stage('SonarCloud') {
+       stage("SonarCloud Analysis") {
     steps {
-        withSonarQubeEnv('sonarqube') {
-            // Let Jenkins handle the scanner installation
-            def scannerHome = tool 'sonar';
-            sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=Ncodeit ..."
+        script {
+            withSonarQubeEnv('sonarqube') {
+                def scannerHome = tool 'sonar'
+                sh """
+                    ${scannerHome}/bin/sonar-scanner \
+                    -Dsonar.projectKey=Ncodeit \
+                    -Dsonar.organization=your_org \
+                    -Dsonar.host.url=https://sonarcloud.io \
+                    -Dsonar.login=your_sonar_token
+                """
+            }
         }
     }
 }
+
         stage("publish to nexus") {
             steps {
                 script {
