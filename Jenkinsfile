@@ -34,20 +34,24 @@ pipeline {
             }
         }
         stage('SonarCloud') {
-            steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh '$SCANNER_HOME/bin/sonar-scanner \
+    steps {
+        withSonarQubeEnv('sonarqube_server') {
+            script {
+                // Use the full path from SCANNER_HOME
+                sh """
+                    ${SCANNER_HOME}/bin/sonar-scanner \
                     -Dsonar.projectKey=Ncodeit \
                     -Dsonar.projectName=Ncodeit \
                     -Dsonar.projectVersion=2.0 \
-                    -Dsonar.sources=/var/lib/jenkins/workspace/$JOB_NAME/src/ \
-                    -Dsonar.binaries=target/classes/com/visualpathit/account/controller/ \
+                    -Dsonar.sources=src/ \
+                    -Dsonar.java.binaries=target/classes/ \
                     -Dsonar.junit.reportsPath=target/surefire-reports \
-                    -Dsonar.jacoco.reportPath=target/jacoco.exec \
-                    -Dsonar.java.binaries=src/com/room/sample'
-                }
+                    -Dsonar.jacoco.reportPath=target/jacoco.exec
+                """
             }
         }
+    }
+}
         stage("publish to nexus") {
             steps {
                 script {
