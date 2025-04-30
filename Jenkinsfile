@@ -35,7 +35,7 @@ pipeline {
         }
         stage('SonarCloud') {
     steps {
-        withSonarQubeEnv('sonarqube_server') {
+        withSonarQubeEnv('sonarqube') {
             script {
                 // Use the full path from SCANNER_HOME
                 sh """
