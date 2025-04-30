@@ -33,22 +33,12 @@ pipeline {
                 }
             }
         }
-        stage('SonarCloud') {
+       stage('SonarCloud') {
     steps {
         withSonarQubeEnv('sonarqube') {
-            script {
-                // Use the full path from SCANNER_HOME
-                sh """
-                    ${SCANNER_HOME}/bin/sonar-scanner \
-                    -Dsonar.projectKey=Ncodeit \
-                    -Dsonar.projectName=Ncodeit \
-                    -Dsonar.projectVersion=2.0 \
-                    -Dsonar.sources=src/ \
-                    -Dsonar.java.binaries=target/classes/ \
-                    -Dsonar.junit.reportsPath=target/surefire-reports \
-                    -Dsonar.jacoco.reportPath=target/jacoco.exec
-                """
-            }
+            // Let Jenkins handle the scanner installation
+            def scannerHome = tool 'sonar_scanner';
+            sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=Ncodeit ..."
         }
     }
 }
