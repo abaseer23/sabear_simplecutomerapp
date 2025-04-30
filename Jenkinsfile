@@ -37,7 +37,7 @@ pipeline {
     steps {
         withSonarQubeEnv('sonarqube') {
             // Let Jenkins handle the scanner installation
-            def scannerHome = tool 'sonar_scanner';
+            def scannerHome = tool 'sonar';
             sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=Ncodeit ..."
         }
     }
